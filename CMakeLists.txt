@@ -53,42 +53,42 @@ add_custom_target(C_CLEANUP
 )
 
 set(HEADER_FILES 
-    ${CMAKE_SOURCE_DIR}/include/FileReader.hpp
-    ${CMAKE_SOURCE_DIR}/include/MinMax.hpp
-    ${CMAKE_SOURCE_DIR}/include/Color.hpp
-    ${CMAKE_SOURCE_DIR}/include/Base.hpp
-    ${CMAKE_SOURCE_DIR}/include/Renderer.hpp
-    ${CMAKE_SOURCE_DIR}/include/Window.hpp
-    ${CMAKE_SOURCE_DIR}/include/Uniform.hpp
-    ${CMAKE_SOURCE_DIR}/include/VertexShader.hpp
-    ${CMAKE_SOURCE_DIR}/include/FragmentShader.hpp
-    ${CMAKE_SOURCE_DIR}/include/Shader.hpp
-    ${CMAKE_SOURCE_DIR}/include/IndexBuffer.hpp
-    ${CMAKE_SOURCE_DIR}/include/VertexBuffer.hpp
-    ${CMAKE_SOURCE_DIR}/include/VertexBufferLayout.hpp
-    ${CMAKE_SOURCE_DIR}/include/VertexArray.hpp
-    ${CMAKE_SOURCE_DIR}/include/Texture.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/FileReader.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/MinMax.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/Color.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/Base.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/Renderer.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/Window.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/Uniform.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/VertexShader.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/FragmentShader.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/Shader.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/IndexBuffer.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/VertexBuffer.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/VertexBufferLayout.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/VertexArray.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/Texture.hpp
 )
 
 set(SOURCE_FILES 
-    ${CMAKE_SOURCE_DIR}/src/FileReader.cpp
-    ${CMAKE_SOURCE_DIR}/src/Color.cpp
-    ${CMAKE_SOURCE_DIR}/src/Renderer.cpp
-    ${CMAKE_SOURCE_DIR}/src/Window.cpp
-    ${CMAKE_SOURCE_DIR}/src/Uniform.cpp
-    ${CMAKE_SOURCE_DIR}/src/VertexShader.cpp
-    ${CMAKE_SOURCE_DIR}/src/FragmentShader.cpp
-    ${CMAKE_SOURCE_DIR}/src/Shader.cpp
-    ${CMAKE_SOURCE_DIR}/src/IndexBuffer.cpp
-    ${CMAKE_SOURCE_DIR}/src/VertexBuffer.cpp
-    ${CMAKE_SOURCE_DIR}/src/VertexBufferLayout.cpp
-    ${CMAKE_SOURCE_DIR}/src/VertexArray.cpp
-    ${CMAKE_SOURCE_DIR}/src/Texture.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/FileReader.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Color.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Renderer.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Window.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Uniform.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/VertexShader.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/FragmentShader.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Shader.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/IndexBuffer.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/VertexBuffer.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/VertexBufferLayout.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/VertexArray.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Texture.cpp
 )
 
 add_library(${PROJECT_NAME} STATIC ${HEADER_FILES} ${SOURCE_FILES})
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/vendor/stb)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/vendor/stb)
 
 add_subdirectory(vendor/glad)
 add_subdirectory(vendor/glfw)

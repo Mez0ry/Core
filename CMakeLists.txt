@@ -92,8 +92,12 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/in
 
 add_subdirectory(vendor/glad)
 add_subdirectory(vendor/glfw)
+add_subdirectory(vendor/glm)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC glad glfw)
+target_include_directories(${PROJECT_NAME} PUBLIC ${glm_SOURCE_DIR})
+
+target_link_libraries(${PROJECT_NAME} PRIVATE glm)
 
 set_target_properties(${PROJECT_NAME}
     PROPERTIES

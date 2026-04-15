@@ -21,11 +21,11 @@ void Renderer::SetClearColor(const Color &color) {
   glClearColor(color.RedF(), color.GreenF(), color.BlueF(), color.AlphaF());
 }
 
-void Renderer::Render(const VertexArray &va, const IndexBuffer &ib, const Shader &shader, GLenum mode){
+void Renderer::Render(const VertexArray &va, const IndexBuffer &ib, const Shader &shader, GLenum mode, uint32_t data_type){
     shader.UseShader();
     va.Bind();
     ib.Bind();
-    glDrawElements(mode, ib.GetCount(), GL_UNSIGNED_INT, nullptr);
+    glDrawElements(mode, ib.GetCount(), data_type, nullptr);
 }
 
 void Renderer::SwapBuffers(Window &window)

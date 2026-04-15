@@ -1,4 +1,5 @@
 #include "Color.hpp"
+#include "Color.hpp"
 #include "MinMax.hpp"
 #include <stdexcept>
 #include <string>
@@ -19,6 +20,14 @@ Color::Color(int32_t r, int32_t g, int32_t b, int32_t a)
     m_Alpha = Bound(0.f, a / 255.0f, 1.0f);
 }
 
+Color::Color(const glm::vec4 &color)
+{
+    m_Red = Bound(0.f, color.x / 255.0f, 1.0f);
+    m_Green = Bound(0.f, color.y / 255.0f, 1.0f);
+    m_Blue = Bound(0.f, color.z / 255.0f, 1.0f);
+    m_Alpha = Bound(0.f, color.w / 255.0f, 1.0f);
+}
+
 Color::Color(const char *name)
 {
     std::string str(name);
@@ -33,13 +42,13 @@ Color::Color(const char *name)
 
     try {
         if (len == 6 || len == 8) {
-
-            r_int = std::stoi(str.substr(0, 2), nullptr, 16);
-            g_int = std::stoi(str.substr(2, 2), nullptr, 16);
-            b_int = std::stoi(str.substr(4, 2), nullptr, 16);
+            const int base = 16;
+            r_int = std::stoi(str.substr(0, 2), nullptr, base);
+            g_int = std::stoi(str.substr(2, 2), nullptr, base);
+            b_int = std::stoi(str.substr(4, 2), nullptr, base);
 
             if (len == 8) {
-                a_int = std::stoi(str.substr(6, 2), nullptr, 16);
+                a_int = std::stoi(str.substr(6, 2), nullptr, base);
             }
         } else {
             r_int = g_int = b_int = 0;

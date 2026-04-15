@@ -3,12 +3,15 @@
 #include <cstdint>
 #include <vector>
 
+#include <glm/glm.hpp>
+
 class Color{
 private:
     float m_Red, m_Green, m_Blue, m_Alpha;
 public:
     explicit Color(float r, float g, float b, float a);
     explicit Color(int32_t r, int32_t g, int32_t b, int32_t a);
+    explicit Color(const glm::vec4& color);
     Color(const char* name);
     
     float RedF() const;

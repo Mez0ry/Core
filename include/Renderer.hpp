@@ -19,7 +19,7 @@ public:
     void SetClearColor(const Color& color);
     void Clear(uint32_t clear_flags = GL_COLOR_BUFFER_BIT) const;
 
-    void Render(const VertexArray& va, const IndexBuffer& ib, const Shader& shader, GLenum mode = GL_TRIANGLES, uint32_t data_type = GL_UNSIGNED_INT);
+    void Render(const VertexArray& va, const IndexBuffer& ib, const Shader& shader, GLenum render_mode = GL_TRIANGLES, uint32_t data_type = GL_UNSIGNED_INT);
 
     void SwapBuffers(Window& window);
 private:

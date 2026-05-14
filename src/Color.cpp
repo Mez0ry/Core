@@ -1,5 +1,4 @@
 #include "Color.hpp"
-#include "Color.hpp"
 #include "MinMax.hpp"
 #include <stdexcept>
 #include <string>

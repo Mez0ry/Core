@@ -18,7 +18,8 @@ public:
     float GreenF() const;
     float BlueF() const;
     float AlphaF() const;
-    //
+    
+    //int32
     int32_t Red() const;
     int32_t Green() const;
     int32_t Blue() const;

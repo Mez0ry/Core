@@ -17,6 +17,12 @@ public:
      */
     Shader(const std::string& shader_path);
 
+    Shader(Shader&& shader) noexcept{
+        this->m_FragmentShader = std::move(shader.m_FragmentShader);
+        this->m_VertexShader = std::move(shader.m_VertexShader);
+        this->m_Id = std::move(shader.m_Id);
+    }
+
     void UseShader() const;
     
     [[nodiscard]] static std::uint32_t CreateProgram();

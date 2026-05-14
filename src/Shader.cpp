@@ -38,7 +38,6 @@ void Shader::AttachShaders() {
 Shader Shader::CreateShader(Scope<VertexShader> vertex_shader, Scope<FragmentShader> fragment_shader)
 {
     Shader shader(std::move(vertex_shader), std::move(fragment_shader));
-
     return shader;
 }
 

@@ -1,5 +1,5 @@
-#ifndef __VERTEX_BUFFER_LAYOUT_HPP__
-#define __VERTEX_BUFFER_LAYOUT_HPP__
+#ifndef __BUFFER_LAYOUT_HPP__
+#define __BUFFER_LAYOUT_HPP__
 #include <vector>
 #include <cstdint>
 #include <optional>
@@ -141,4 +141,4 @@ inline void BufferLayout::Push<Vertex2D>(bool normalized){
     this->Push<glm::vec3>(normalized);
 }
 
-#endif //!__VERTEX_BUFFER_LAYOUT_HPP__
+#endif //!__BUFFER_LAYOUT_HPP__

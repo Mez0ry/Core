@@ -1,6 +1,6 @@
 #include "VertexArray.hpp"
 #include "VertexBuffer.hpp"
-#include "VertexBufferLayout.hpp"
+#include "BufferLayout.hpp"
 
 VertexArray::VertexArray() {
     glGenVertexArrays(1, &m_BufferId);  
@@ -11,7 +11,7 @@ VertexArray::~VertexArray() {
     glDeleteVertexArrays(1, &m_BufferId);
 }
 
-void VertexArray::AddBuffer(const VertexBufferLayout &layout)
+void VertexArray::AddBuffer(const BufferLayout &layout)
 {
     Bind();
 

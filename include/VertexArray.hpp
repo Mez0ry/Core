@@ -4,7 +4,7 @@
 #include <cstdint>
 
 class VertexBuffer;
-class VertexBufferLayout;
+class BufferLayout;
 
 class VertexArray{
 private:
@@ -13,7 +13,7 @@ public:
     VertexArray();
     ~VertexArray();
     
-    void AddBuffer(const VertexBufferLayout& layout);
+    void AddBuffer(const BufferLayout& layout);
     void Bind() const;
     void UnBind() const;
 private:

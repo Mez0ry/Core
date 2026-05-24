@@ -47,7 +47,7 @@ inline void UniformBuffer::StoreData(T value)
     }
     
     this->Bind();
-    glBufferSubData(GL_UNIFORM_BUFFER, m_BufferLayout.GetOffset(u_loc).value_or(0), element_size, &value);
+    glBufferSubData(GL_UNIFORM_BUFFER, m_BufferLayout.GetOffset(u_loc).value_or(0), element_size.value(), &value);
     this->UnBind();
 }
 

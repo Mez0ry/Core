@@ -6,6 +6,7 @@
 
 #include <glad/gl.h>
 #include "Vertex.hpp"
+#include <glm/ext.hpp>
 
 struct LayoutElement{
     LayoutElement(uint32_t _type, uint32_t _count, bool _normalized) : type(_type), count(_count), normalized(_normalized) {}
@@ -19,28 +20,30 @@ private:
     std::vector<uint32_t> m_Offsets;
     uint32_t m_Stride{0};
 public:
+    BufferLayout() = default;
+    ~BufferLayout() = default;
+
     template <typename TValue>
     void Push(bool normalized);
 
     template <typename TValue>
     void Push(uint32_t count, bool normalized = false);
 
-    uint32_t GetStride() const;
-
-    uint32_t GetStride(const uint32_t count, const uint32_t type) const;
-    uint32_t GetStride(const LayoutElement& layout_element) const;
-
-    uint32_t GetStrideAt(const uint32_t index) const;
+    const std::vector<LayoutElement>& GetElements() const;
+    std::optional<uint32_t> GetElementSizeAt(const int index) const;
+    
+    const uint32_t GetStride() const;
+    std::optional<uint32_t> GetStride(const uint32_t count, const uint32_t type) const;
+    std::optional<uint32_t> GetStride(const LayoutElement& layout_element) const;
+    std::optional<uint32_t> GetStrideAt(const uint32_t index) const;
 
     std::optional<uint32_t> GetOffset(const int index) const;
 
     auto begin() const {return m_BufferLayout.cbegin();}
     auto end() const {return m_BufferLayout.cend();}
 
-    const auto& GetElements() const {
-        return m_BufferLayout;
-    }
-
+    bool IsEmpty() const;
+    
 private:
     template <typename TValue>
     static auto GetSize(uint32_t count);
@@ -130,6 +133,11 @@ inline void BufferLayout::Push<glm::vec<2, float, glm::packed_highp>>(bool norma
 template <>
 inline void BufferLayout::Push<glm::vec<3, float, glm::packed_highp>>(bool normalized){
     this->Push<float>(3, normalized);
+}
+
+template <>
+inline void BufferLayout::Push<glm::mat<4, 4, glm::f32, glm::packed_highp>>(bool normalized){
+    this->Push<float>(16, normalized);
 }
 
 template <>

@@ -1,13 +1,13 @@
 #include "BufferLayout.hpp"
 
-uint32_t BufferLayout::GetStride() const
+const uint32_t BufferLayout::GetStride() const
 {
     return m_Stride; 
 }
 
-uint32_t BufferLayout::GetStride(const uint32_t count, const uint32_t type) const
+std::optional<uint32_t> BufferLayout::GetStride(const uint32_t count, const uint32_t type) const
 {
-    uint32_t type_size{std::numeric_limits<uint32_t>::max()};
+    uint32_t type_size;
 
     switch (type)
     {
@@ -30,27 +30,56 @@ uint32_t BufferLayout::GetStride(const uint32_t count, const uint32_t type) cons
             type_size = sizeof(double);
             break;
         default:
-            return 0;
+            return std::nullopt;
     }
 
     return count * type_size;
 }
 
-uint32_t BufferLayout::GetStride(const LayoutElement &layout_element) const
+std::optional<uint32_t> BufferLayout::GetStride(const LayoutElement &layout_element) const
 {
     return GetStride(layout_element.count, layout_element.type);
 }
 
-uint32_t BufferLayout::GetStrideAt(const uint32_t index) const
+std::optional<uint32_t> BufferLayout::GetStrideAt(const uint32_t index) const
 {
-    if(index >= m_BufferLayout.size()){
-        return std::numeric_limits<uint32_t>::max();
-    }
-
     return GetStride(m_BufferLayout[index]);
 }
 
 std::optional<uint32_t> BufferLayout::GetOffset(const int index) const
 {
-    return m_Offsets[index];
+    if(index >= m_BufferLayout.size()){
+        return std::nullopt;
+    }
+
+    if(index == 0){
+        return 0U;
+    }
+    
+    return m_Offsets[index - 1];
+}
+
+const std::vector<LayoutElement> &BufferLayout::GetElements() const
+{
+    return m_BufferLayout;
+}
+
+bool BufferLayout::IsEmpty() const
+{
+    return (m_Stride == 0);
+}
+
+std::optional<uint32_t> BufferLayout::GetElementSizeAt(const int index) const
+{
+    if(index >= m_BufferLayout.size()){
+        return std::nullopt;
+    }
+
+    if(m_BufferLayout.size() < 2){
+        return m_Stride;
+    }
+
+    const auto lhs = m_Offsets[index - 1];
+
+    return ((lhs + m_Offsets[index]) - lhs);
 }

@@ -22,7 +22,6 @@ public:
     void UnBind() const;
 
     void FreeBuffer();
-    
 private:
 };
 #endif //! __TEXTURE_HPP__

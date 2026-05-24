@@ -19,8 +19,7 @@ void VertexArray::AddBuffer(const BufferLayout &layout)
     
     for(auto index = 0; index < elements.size(); index++){
         auto& element = elements[index];
-        const auto optional_offset = (index == 0) ? 0 : layout.GetOffset(index - 1);
-        const auto offset = (const void*)static_cast<uintptr_t>((optional_offset.has_value()) ? optional_offset.value() : 0);
+        const auto offset = (const void*)static_cast<uintptr_t>(layout.GetOffset(index).value_or(0));
 
         glEnableVertexAttribArray(index);
         glVertexAttribPointer(index, element.count, element.type, element.normalized, layout.GetStride(), offset);

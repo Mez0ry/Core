@@ -68,7 +68,7 @@ set(HEADER_FILES
 
     ${CMAKE_CURRENT_SOURCE_DIR}/include/IndexBuffer.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/VertexBuffer.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/VertexBufferLayout.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/BufferLayout.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/VertexArray.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/Vertex.hpp
 
@@ -89,7 +89,7 @@ set(SOURCE_FILES
 
     ${CMAKE_CURRENT_SOURCE_DIR}/src/IndexBuffer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/VertexBuffer.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/VertexBufferLayout.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/BufferLayout.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/VertexArray.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Vertex.cpp
 

@@ -1,11 +1,11 @@
-#include "VertexBufferLayout.hpp"
+#include "BufferLayout.hpp"
 
-uint32_t VertexBufferLayout::GetStride() const
+uint32_t BufferLayout::GetStride() const
 {
     return m_Stride; 
 }
 
-uint32_t VertexBufferLayout::GetStride(const uint32_t count, const uint32_t type) const
+uint32_t BufferLayout::GetStride(const uint32_t count, const uint32_t type) const
 {
     uint32_t type_size{std::numeric_limits<uint32_t>::max()};
 
@@ -36,21 +36,21 @@ uint32_t VertexBufferLayout::GetStride(const uint32_t count, const uint32_t type
     return count * type_size;
 }
 
-uint32_t VertexBufferLayout::GetStride(const LayoutElement &layout_element) const
+uint32_t BufferLayout::GetStride(const LayoutElement &layout_element) const
 {
     return GetStride(layout_element.count, layout_element.type);
 }
 
-uint32_t VertexBufferLayout::GetStrideAt(const uint32_t index) const
+uint32_t BufferLayout::GetStrideAt(const uint32_t index) const
 {
-    if(index >= m_VertexBufferLayout.size()){
+    if(index >= m_BufferLayout.size()){
         return std::numeric_limits<uint32_t>::max();
     }
 
-    return GetStride(m_VertexBufferLayout[index]);
+    return GetStride(m_BufferLayout[index]);
 }
 
-std::optional<uint32_t> VertexBufferLayout::GetOffset(const int index) const
+std::optional<uint32_t> BufferLayout::GetOffset(const int index) const
 {
     return m_Offsets[index];
 }

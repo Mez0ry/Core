@@ -62,6 +62,8 @@ set(HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/include/Window.hpp
     
     ${CMAKE_CURRENT_SOURCE_DIR}/include/Uniform.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/UniformBuffer.hpp
+
     ${CMAKE_CURRENT_SOURCE_DIR}/include/VertexShader.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/FragmentShader.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/Shader.hpp
@@ -83,6 +85,8 @@ set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Window.cpp
 
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Uniform.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/UniformBuffer.cpp
+
     ${CMAKE_CURRENT_SOURCE_DIR}/src/VertexShader.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/FragmentShader.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Shader.cpp

@@ -1,6 +1,7 @@
 #include "Uniform.hpp"
 #include "Shader.hpp"
 #include <glad/gl.h>
+#include "glm/ext.hpp"
 
 Uniform::Uniform(Shader & shader) : m_Shader(shader)
 {
@@ -25,6 +26,11 @@ void Uniform::SetUniformFloat3(const std::string &name, float v0, float v1, floa
 void Uniform::SetUniformFloat4(const std::string &name, float v0, float v1, float v2, float v3)
 {
     SetShaderUniformFloat4(m_Shader, name, v0, v1, v2, v3);
+}
+
+void Uniform::SetUniformMat4(const std::string &name, const glm::mat<4, 4, glm::f32, glm::packed_highp>& mat, bool transpose)
+{
+    SetShaderUniformMat4(m_Shader, name, mat, transpose);
 }
 
 void Uniform::SetShaderUniformInt1(const Shader &shader, const std::string &name, int v0)
@@ -52,6 +58,11 @@ void Uniform::SetShaderUniformFloat4(const Shader &shader, const std::string &na
     glUniform4f(Uniform::GetUniformLocation(shader,name), v0, v1 , v2, v3);
 }
 
+void Uniform::SetShaderUniformMat4(const Shader &shader, const std::string &name, const glm::mat<4, 4, glm::f32, glm::packed_highp>& mat, bool transpose)
+{
+    glUniformMatrix4fv(Uniform::GetUniformLocation(shader,name), 1, transpose, glm::value_ptr(mat));
+}
+
 void Uniform::SetUniformFloat1(int32_t location, float v0) {
     glUniform1f(location, v0);
 }
@@ -66,6 +77,11 @@ void Uniform::SetUniformFloat3(int32_t location, float v0, float v1, float v2) {
 
 void Uniform::SetUniformFloat4(int32_t location, float v0, float v1, float v2, float v3){
     glUniform4f(location, v0, v1, v2, v3);
+}
+
+void Uniform::SetUniformMat4(int32_t location, const glm::mat<4, 4, glm::f32, glm::packed_highp> &mat, bool transpose)
+{
+    glUniformMatrix4fv(location, 1, transpose, glm::value_ptr(mat));
 }
 
 int32_t Uniform::GetUniformLocation(const Shader &shader, const std::string &name)

@@ -76,6 +76,7 @@ set(HEADER_FILES
 
     ${CMAKE_CURRENT_SOURCE_DIR}/include/Texture.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/Mesh.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/Sprite2D.hpp
 )
 
 set(SOURCE_FILES 
@@ -99,6 +100,7 @@ set(SOURCE_FILES
 
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Texture.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Mesh.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Sprite2D.cpp
 )
 
 add_library(${PROJECT_NAME} STATIC ${HEADER_FILES} ${SOURCE_FILES})

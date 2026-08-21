@@ -16,9 +16,9 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(stb)
 
 if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
-    add_definitions(-D_DEBUG)
+    add_definitions(-DCORE_DEBUG)
 elseif(${CMAKE_BUILD_TYPE} MATCHES "Release")
-    add_definitions(-D_RELEASE) 
+    add_definitions(-DCORE_RELEASE) 
 endif()
 
 set(PROCESSOR_ARHITECTURE_TYPE "UNKNOWN")
@@ -52,7 +52,9 @@ add_custom_target(C_CLEANUP
     COMMENT "Cleaning output directory ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/${PROCESSOR_ARHITECTURE_TYPE}"
 )
 
-set(HEADER_FILES 
+set(HEADER_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/Formaters.hpp
+
     ${CMAKE_CURRENT_SOURCE_DIR}/include/FileReader.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/MinMax.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/Color.hpp
@@ -110,8 +112,9 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/in
 add_subdirectory(vendor/glad)
 add_subdirectory(vendor/glfw)
 add_subdirectory(vendor/glm)
+add_subdirectory(vendor/spdlog)
 
-target_link_libraries(${PROJECT_NAME} PUBLIC glad glfw)
+target_link_libraries(${PROJECT_NAME} PUBLIC glad glfw spdlog::spdlog_header_only)
 target_include_directories(${PROJECT_NAME} PUBLIC ${glm_SOURCE_DIR})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE glm)

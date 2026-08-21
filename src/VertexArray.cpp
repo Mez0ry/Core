@@ -7,14 +7,26 @@ VertexArray::VertexArray() {
     Bind();
 }
 
+VertexArray::VertexArray(const Ref<VertexBuffer> vertex_buffer, const BufferLayout &layout)
+{
+    glGenVertexArrays(1, &m_BufferId);  
+    Bind();
+    m_LastUsedVertexBuffer = vertex_buffer;
+
+    if(m_LastUsedVertexBuffer)
+        AddBuffer(*m_LastUsedVertexBuffer, layout);
+    
+    UnBind();
+}
+
 VertexArray::~VertexArray() {
     glDeleteVertexArrays(1, &m_BufferId);
 }
 
-void VertexArray::AddBuffer(const BufferLayout &layout)
+void VertexArray::AddBuffer(const VertexBuffer& vertex_buffer, const BufferLayout &layout)
 {
     Bind();
-
+    vertex_buffer.Bind();
     const auto& elements = layout.GetElements();
     
     for(auto index = 0; index < elements.size(); index++){

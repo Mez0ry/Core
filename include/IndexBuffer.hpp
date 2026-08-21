@@ -6,9 +6,11 @@ class IndexBuffer{
 private:
     uint32_t m_BufferId, m_Count;
 public:
+    IndexBuffer() = default;
     IndexBuffer(const uint32_t* data, uint32_t element_count);
     ~IndexBuffer();
 
+    void CreateBuffer(const uint32_t* data, uint32_t element_count);
     void Bind() const;
     void UnBind() const;
 

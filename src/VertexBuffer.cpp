@@ -13,7 +13,7 @@ VertexBuffer::VertexBuffer(const std::initializer_list<Vertex2D> &vertices_list)
     GenerateAndBindBuffer();
 
     std::vector<Vertex2D> vertices(vertices_list);
-    glBufferData(GL_ARRAY_BUFFER, vertices .size() * sizeof(Vertex2D), vertices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex2D), vertices.data(), GL_STATIC_DRAW);
 }
 
 VertexBuffer::VertexBuffer(const Vertex2D &vertex) {

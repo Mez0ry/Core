@@ -1,7 +1,7 @@
 #include "UniformBuffer.hpp"
 #include "BufferLayout.hpp"
 
-UniformBuffer::UniformBuffer(const BufferLayout &layout, const Location location, UniformLayoutType uniform_layout_type) : m_BufferLayout(layout)
+UniformBuffer::UniformBuffer(const BufferLayout &layout, const Location location, UniformLayoutType uniform_layout_type) : m_BufferLayout(layout), m_Location(location)
 {
     if(layout.IsEmpty()){
         // handle it
@@ -9,7 +9,7 @@ UniformBuffer::UniformBuffer(const BufferLayout &layout, const Location location
 
     glGenBuffers(1, &m_BufferId);
     Bind();
-    glBindBufferBase(GL_UNIFORM_BUFFER, static_cast<std::uint8_t>(m_Location), m_BufferId);
+    BindBufferBase(m_Location);
 
     AllocateData(m_BufferLayout, uniform_layout_type);
     UnBind();
@@ -17,6 +17,10 @@ UniformBuffer::UniformBuffer(const BufferLayout &layout, const Location location
 
 void UniformBuffer::Bind() const {
     glBindBuffer(GL_UNIFORM_BUFFER, m_BufferId);
+}
+
+void UniformBuffer::BindBufferBase(const Location location) {
+    glBindBufferBase(GL_UNIFORM_BUFFER, static_cast<std::uint8_t>(location), m_BufferId);
 }
 
 void UniformBuffer::UnBind() const {

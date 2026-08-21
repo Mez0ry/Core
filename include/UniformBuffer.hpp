@@ -23,6 +23,8 @@ public:
     UniformBuffer(const BufferLayout& layout, const Location location, UniformLayoutType uniform_layout_type = UniformLayoutType::STD_140);
 
     void Bind() const;
+    void BindBufferBase(const Location location);
+
     void UnBind() const;
     
     template <typename T>

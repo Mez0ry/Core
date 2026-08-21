@@ -1,7 +1,8 @@
 #include "FragmentShader.hpp"
 #include <glad/gl.h>
-#include <iostream>
 #include "FileReader.hpp"
+
+#include <spdlog/spdlog.h>
 
 FragmentShader::FragmentShader(const std::string &path, std::uint32_t count, const GLint* length)
 {
@@ -34,12 +35,14 @@ void FragmentShader::Compile() {
     glCompileShader(m_Id);
 
     int  success;
-    char info_log[512];
+
     glGetShaderiv(m_Id, GL_COMPILE_STATUS, &success);
     if(!success)
     {
-        glGetShaderInfoLog(m_Id, 512, NULL, info_log);
-        std::cout << "VertexShader::Compile, status: COMPILATION_FAILED, info log: " << info_log << '\n';
+        const size_t size = 512;
+        char info_log[size];
+        glGetShaderInfoLog(m_Id, size, NULL, info_log);
+        spdlog::error("Core::FragmentShader::Compile, status: COMPILATION_FAILED. log: {}", info_log);
     }
 }
 

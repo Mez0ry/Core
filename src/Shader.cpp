@@ -4,6 +4,8 @@
 #include <iostream>
 #include <FileReader.hpp>
 
+#include <spdlog/spdlog.h>
+
 Shader::Shader(Scope<VertexShader> vertex_shader, Scope<FragmentShader> fragment_shader) : m_VertexShader(std::move(vertex_shader)), m_FragmentShader(std::move(fragment_shader))
 {
     Setup();
@@ -31,6 +33,14 @@ Shader::Shader(Shader &&shader) noexcept
     this->m_Id = std::move(shader.m_Id);
 }
 
+Shader::~Shader() {
+    CleanProgram();
+}
+
+void Shader::CleanProgram() {
+    glDeleteProgram(m_Id);
+}
+
 void Shader::UseShader() const{
     glUseProgram(m_Id);
 }
@@ -40,7 +50,9 @@ bool Shader::IsValid() const
     return (glIsProgram(m_Id) != GL_FALSE);
 }
 
-std::uint32_t Shader::CreateProgram() { return glCreateProgram(); }
+std::uint32_t Shader::CreateProgram() { 
+    return glCreateProgram(); 
+}
 
 void Shader::AttachShaders() {
     glAttachShader(m_Id, m_VertexShader->GetId());
@@ -59,13 +71,15 @@ void Shader::LinkShader() {
 
 void Shader::LinkShader(std::uint32_t id) {
     glLinkProgram(id);
+    
     int  success;
-    char info_log[512];
-
     glGetProgramiv(id, GL_LINK_STATUS, &success);
+
     if(!success) {
-        glGetProgramInfoLog(id, 512, NULL, info_log);
-        std::cout << "Shader::LinkShader, status: LINKING_FAILED, " << info_log << '\n';
+        const size_t size = 512;
+        char info_log[size];
+        glGetProgramInfoLog(id, size, NULL, info_log);
+        spdlog::error("Shader::LinkShader, status: LINKING_FAILED, info log: {}", info_log);
     }
 }
 
@@ -86,7 +100,8 @@ std::uint32_t Shader::GetFragmentId() const
 
 void Shader::Setup() {
     if(m_Id){
-        //handle
+       spdlog::warn("Core::Shader::Setup. Attempted to set up a shader that has already been initialized. The previous shader program will be cleaned up.");
+       CleanProgram();
     }
     m_Id = CreateProgram();
     AttachShaders();

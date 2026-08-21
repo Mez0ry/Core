@@ -1,14 +1,17 @@
 #include "Texture.hpp"
 #include <stb_image.h>
 #include <functional>
+#include <spdlog/spdlog.h>
 
-Texture::Texture(const std::string &path, GLenum pixel_data_type, int32_t wrapping, int32_t filtering ) : m_Path(path)
+Texture::Texture(const std::string &path, GLenum pixel_data_type, int32_t wrapping, int32_t filtering) : m_Path(path)
 {
     stbi_set_flip_vertically_on_load(true);
+    
     auto img_data = stbi_load(path.c_str(), &m_Width, &m_Height, &m_BasePerPixel, 4);
-     if(!img_data){
-        // handle
-        return;
+    
+    if(!img_data){
+        spdlog::error("Failed to load texture image at path: {}", path);
+        throw std::runtime_error("Texture load failed");
     }
 
     m_LocalBuffer = Ref<uint8_t>(img_data, [](uint8_t* data){

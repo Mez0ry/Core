@@ -1,5 +1,10 @@
 #include "Sprite2D.hpp"
 #include "Uniform.hpp"
+#include <spdlog/spdlog.h>
+
+#ifdef CORE_DEBUG
+    #include "Formaters.hpp"
+#endif
 
 Sprite2D::Sprite2D(const std::string &texture_path, const Ref<Shader> shader, glm::vec2 size, glm::vec2 pos) : m_Model(1.f), m_Mesh({MeshTexture(MakeReference<Texture>(texture_path), TextureType::Base)}), m_Shader(shader), m_Size(size), m_Position(pos)
 {
@@ -8,6 +13,9 @@ Sprite2D::Sprite2D(const std::string &texture_path, const Ref<Shader> shader, gl
 
 void Sprite2D::SetPosition(glm::vec2 pos) {
     m_Position = pos;
+    #ifdef CORE_DEBUG
+        spdlog::info("Core::Sprite2D::SetPosition, Position: {}", m_Position);
+    #endif
 }
 
 glm::vec2 Sprite2D::GetPosition() const
@@ -17,6 +25,10 @@ glm::vec2 Sprite2D::GetPosition() const
 
 void Sprite2D::SetRotation(float degrees) {
     m_Rotation = degrees;
+
+    #ifdef CORE_DEBUG
+        spdlog::info("Core::Sprite2D::SetRotation, Rotation: {}", m_Rotation);
+    #endif
 }
 
 float Sprite2D::GetRotation() const { 
@@ -26,6 +38,9 @@ float Sprite2D::GetRotation() const {
 void Sprite2D::SetSize(glm::vec2 &size)
 {
     m_Size = size;
+    #ifdef CORE_DEBUG
+        spdlog::info("Core::Sprite2D::SetRotation, Size: {}", m_Size);
+    #endif
 }
 
 const glm::vec2 &Sprite2D::GetSize() const
@@ -57,10 +72,6 @@ const Ref<Shader> Sprite2D::GetShader() const
     return m_Shader;
 }
 
-#define GLM_ENABLE_EXPERIMENTAL
-#include <glm/gtx/string_cast.hpp>
-#include <iostream>
-
 void Sprite2D::Update() const{
     glm::mat4 model = glm::mat4(1.0f);
     
@@ -76,7 +87,6 @@ void Sprite2D::Update() const{
     if(m_Shader){
         m_Shader->UseShader();
         Uniform::SetShaderUniformMat4(*m_Shader, "u_Model", model);
-        //std::cout << glm::to_string(m_Model) << '\n';
     }
 }
 

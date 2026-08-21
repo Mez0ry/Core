@@ -13,6 +13,8 @@
 
 #include "Color.hpp"
 
+#include <spdlog/spdlog.h>
+
 void Renderer::Clear(uint32_t clear_flags) const{
     glClear(clear_flags);
 }
@@ -41,8 +43,9 @@ void Renderer::Render(const VertexArray &va, const IndexBuffer &ib, const Shader
 void Renderer::Render(const Mesh &mesh, const Shader &shader, GLenum render_mode, uint32_t data_type)
 {
     if(!shader.IsValid()){
-        //handle
+        spdlog::warn("Core::Renderer:Render(const Mesh&, const Shader&, GLenum, uint32_t), Warning: Shader is not valid");
     }
+
     shader.UseShader();
     
     auto& textures = mesh.GetTextures();

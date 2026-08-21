@@ -18,7 +18,10 @@ public:
     Shader(const std::string& shader_path);
 
     Shader(Shader&& shader) noexcept;
+    ~Shader();
 
+    void CleanProgram();
+    
     void UseShader() const;
     bool IsValid() const;
 

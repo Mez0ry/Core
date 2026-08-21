@@ -24,8 +24,20 @@ Shader::Shader(const std::string &shader_path)
     Setup();
 }
 
+Shader::Shader(Shader &&shader) noexcept
+{
+    this->m_FragmentShader = std::move(shader.m_FragmentShader);
+    this->m_VertexShader = std::move(shader.m_VertexShader);
+    this->m_Id = std::move(shader.m_Id);
+}
+
 void Shader::UseShader() const{
     glUseProgram(m_Id);
+}
+
+bool Shader::IsValid() const
+{
+    return (glIsProgram(m_Id) != GL_FALSE);
 }
 
 std::uint32_t Shader::CreateProgram() { return glCreateProgram(); }

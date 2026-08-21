@@ -17,14 +17,11 @@ public:
      */
     Shader(const std::string& shader_path);
 
-    Shader(Shader&& shader) noexcept{
-        this->m_FragmentShader = std::move(shader.m_FragmentShader);
-        this->m_VertexShader = std::move(shader.m_VertexShader);
-        this->m_Id = std::move(shader.m_Id);
-    }
+    Shader(Shader&& shader) noexcept;
 
     void UseShader() const;
-    
+    bool IsValid() const;
+
     [[nodiscard]] static std::uint32_t CreateProgram();
     void AttachShaders();
     static Shader CreateShader(Scope<VertexShader> vertex_shader, Scope<FragmentShader> fragment_shader);

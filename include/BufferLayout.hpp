@@ -25,7 +25,7 @@ public:
 
     template <typename TValue>
     void Push(bool normalized);
-
+    
     template <typename TValue>
     void Push(uint32_t count, bool normalized = false);
 

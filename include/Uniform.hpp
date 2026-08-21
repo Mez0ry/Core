@@ -13,7 +13,10 @@ private:
     Shader & m_Shader;
 public:
     Uniform(Shader& shader);
-
+    
+    // Uniform block
+    static void SetUniformBlock(const Shader& shader, const std::string& block_name, int32_t uniform_block_idx);
+    
     // Instance methods
     void SetUniformFloat1(const std::string &name, float v0);
     void SetUniformFloat2(const std::string &name, float v0, float v1);
@@ -38,5 +41,8 @@ public:
     
     int32_t GetUniformLocation(const std::string &name) const;
     static int GetUniformLocation(const Shader &shader, const std::string &name);
+
+    uint32_t GetUniformBlockIndex(const std::string& name) const;
+    static uint32_t GetUniformBlockIndex(const Shader &shader, const std::string& name);
 };
 #endif //!__UNIFORM_HPP__

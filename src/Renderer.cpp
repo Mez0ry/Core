@@ -4,12 +4,15 @@
 
 #include "Window.hpp"
 #include "VertexArray.hpp"
+#include "VertexBuffer.hpp"
+
 #include "IndexBuffer.hpp"
 #include "Shader.hpp"
 
 #include "Mesh.hpp"
 #include "Uniform.hpp"
 #include "Sprite2D.hpp"
+#include "Batch.hpp"
 
 #include "Color.hpp"
 
@@ -38,44 +41,26 @@ void Renderer::Render(const VertexArray &va, const IndexBuffer &ib, const Shader
     ib.UnBind();
 }
 
-#include <iostream>
-
-void Renderer::Render(const Mesh &mesh, const Shader &shader, GLenum render_mode, uint32_t data_type)
+void Renderer::Render(const Ref<Mesh> mesh, const Shader &shader, GLenum render_mode, uint32_t data_type)
 {
+    if(!mesh){
+        spdlog::warn("Core::Renderer:Render(const Ref<Mesh>, const Shader&, GLenum, uint32_t), Warning: Mesh is nullptr");
+        return;
+    }
+
     if(!shader.IsValid()){
-        spdlog::warn("Core::Renderer:Render(const Mesh&, const Shader&, GLenum, uint32_t), Warning: Shader is not valid");
+        spdlog::warn("Core::Renderer:Render(const Ref<Mesh>, const Shader&, GLenum, uint32_t), Warning: Shader is not valid");
+        return;
     }
 
     shader.UseShader();
     
-    auto& textures = mesh.GetTextures();
-    
-    unsigned int diffuse_nr = 1;
-    unsigned int specular_nr = 1;
-    for(unsigned int i = 0; i < textures.size(); i++)
-    {        
-        std::string uniform_name;
-        switch (textures[i].type)
-        {
-            case TextureType::Diffuse:
-                uniform_name = "u_diffuse" + std::to_string(diffuse_nr++);
-                break;
-            case TextureType::Specular:
-                uniform_name = "u_specular" + std::to_string(specular_nr++);
-                break;
-            case TextureType::Base:
-                uniform_name = textures[i].str_type; 
-                break;
-            default:
-                uniform_name = textures[i].str_type;
-        }
+    auto texture = mesh->GetTexture();
+    texture->Bind();
+    Uniform::SetShaderUniformInt1(shader, "u_texture", 0);
 
-        textures[i].texture->Bind(i);
-        Uniform::SetShaderUniformInt1(shader, uniform_name, i);
-    }
-
-    auto& va = mesh.GetVertexArray();
-    auto& ib = mesh.GetIndexBuffer();
+    auto& va = mesh->GetVertexArray();
+    auto& ib = mesh->GetIndexBuffer();
     va->Bind();
     ib->Bind();
     
@@ -87,8 +72,47 @@ void Renderer::Render(const Mesh &mesh, const Shader &shader, GLenum render_mode
 
 void Renderer::Render(const Sprite2D &sprite)
 {
-    sprite.Update();
+    sprite.CalculateModelMatrix();
+    
     this->Render(sprite.GetMesh(), *sprite.GetShader());
+}
+
+void Renderer::Render(SpriteBatch &batch)
+{
+    batch.PrepareForRender();
+
+    auto shader = batch.GetShader();
+    if(!shader || !shader->IsValid()){
+        spdlog::warn("Core::Renderer:Render(const QuadBatch &batch), Warning: Shader is not valid");
+    }
+    
+    shader->UseShader();
+    auto texture = batch.GetTexture();
+    texture->Bind();
+
+    Uniform::SetShaderUniformInt1(*shader, "u_texture", 0);
+    
+    auto va = batch.GetVertexArray();
+    auto ib = batch.GetIndexBuffer();
+
+    if(!va){
+        spdlog::warn("Core::Renderer:Render(const QuadBatch &batch), Warning: VertexArray is nullptr");
+        return;
+    }
+
+    if(!ib){
+        spdlog::warn("Core::Renderer:Render(const QuadBatch &batch), Warning: IndexBuffer is nullptr");
+        return;
+    }
+
+    size_t matrix_count{batch.GetModelMatrices().size()}, index_count{ib->GetCount()};
+    va->Bind();
+    batch.UpdateModel();
+    ib->Bind();
+    glDrawElementsInstanced(GL_TRIANGLES, index_count, GL_UNSIGNED_INT, nullptr, matrix_count);
+    va->UnBind();
+
+    glActiveTexture(GL_TEXTURE0);
 }
 
 void Renderer::SwapBuffers(Window &window)

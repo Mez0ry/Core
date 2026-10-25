@@ -2,8 +2,7 @@
 #define __UNIFORM_BUFFER_HPP__
 #include <cstdint>
 #include "BufferLayout.hpp"
-
-class BufferLayout;
+#include "Base.hpp"
 
 enum class UniformLayoutType : uint8_t{
     STD_140
@@ -21,7 +20,8 @@ private:
 public:
     UniformBuffer() = default;
     UniformBuffer(const BufferLayout& layout, const Location location, UniformLayoutType uniform_layout_type = UniformLayoutType::STD_140);
-
+    ~UniformBuffer();
+    
     void Bind() const;
     void BindBufferBase(const Location location);
 

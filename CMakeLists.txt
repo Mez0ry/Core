@@ -60,6 +60,8 @@ set(HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/include/Color.hpp
 
     ${CMAKE_CURRENT_SOURCE_DIR}/include/Base.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/Opengl.hpp
+
     ${CMAKE_CURRENT_SOURCE_DIR}/include/Renderer.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/Window.hpp
     
@@ -69,19 +71,23 @@ set(HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/include/VertexShader.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/FragmentShader.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/Shader.hpp
-
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/Quad.hpp
+    
     ${CMAKE_CURRENT_SOURCE_DIR}/include/IndexBuffer.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/VertexBuffer.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/BufferLayout.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/VertexArray.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/Vertex.hpp
 
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/Batch.hpp
+
     ${CMAKE_CURRENT_SOURCE_DIR}/include/Texture.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/Mesh.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/Sprite2D.hpp
 )
 
-set(SOURCE_FILES 
+set(SOURCE_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Opengl.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/FileReader.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Color.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Renderer.cpp
@@ -93,12 +99,15 @@ set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/VertexShader.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/FragmentShader.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Shader.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Quad.cpp
 
     ${CMAKE_CURRENT_SOURCE_DIR}/src/IndexBuffer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/VertexBuffer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/BufferLayout.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/VertexArray.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Vertex.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Batch.cpp
 
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Texture.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Mesh.cpp

@@ -4,8 +4,9 @@
 #include <optional>
 #include <string>
 #include <glm/glm.hpp>
+#include "Base.hpp"
 
-class Shader;
+BASE_FWD_DECLARE_CLASS(Shader)
 
 class Uniform
 {
@@ -31,6 +32,7 @@ public:
     static void SetShaderUniformFloat3(const Shader &shader, const std::string &name, float v0, float v1, float v2);
     static void SetShaderUniformFloat4(const Shader &shader, const std::string &name, float v0, float v1, float v2, float v3);
     static void SetShaderUniformMat4(const Shader &shader, const std::string &name, const glm::mat<4, 4, glm::f32, glm::packed_highp>& mat, bool transpose = false);
+    static void SetShaderUniformMat4Ptr(const Shader &shader, const std::string &name, const float* mat, bool transpose = false);
     
     // Methods with explicit location
     static void SetUniformFloat1(int32_t location, float v0);

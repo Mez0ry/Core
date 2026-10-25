@@ -3,11 +3,14 @@
 #include "Mesh.hpp"
 #include <glm/ext.hpp>
 #include <string>
+#include <vector>
+
+BASE_FWD_DECLARE_CLASS(Vertex2D);
 
 class Sprite2D{
 private:
     mutable glm::mat4 m_Model;
-    QuadMesh m_Mesh;
+    Ref<QuadMesh> m_Mesh;
     Ref<Shader> m_Shader;
 public:
     enum class Location : int{
@@ -15,7 +18,11 @@ public:
         U_TEXTURE_DIFFUSE1, U_TEXTURE_DIFFUSE2, U_TEXTURE_DIFFUSE3,
         U_TEXTURE_NORMAL1, U_TEXTURE_NORMAL2, U_TEXTURE_NORMAL3 
     };
+
     Sprite2D(const std::string& texture_path, const Ref<Shader> shader, glm::vec2 size, glm::vec2 pos = {0, 0});
+    Sprite2D(const Ref<Texture> texture, const Ref<Shader> shader, glm::vec2 size, glm::vec2 pos = {0, 0});
+    Sprite2D(glm::vec2 size, glm::vec2 pos = {0, 0});
+
     ~Sprite2D() = default;
 
     void SetPosition(glm::vec2 pos);
@@ -31,10 +38,12 @@ public:
     float GetScale() const;
 
     glm::mat4 GetModel() const;
-    const QuadMesh& GetMesh() const;
+    const Ref<QuadMesh> GetMesh() const;
     const Ref<Shader> GetShader() const;
 
-    void Update() const;
+    void CalculateModelMatrix() const;
+
+    const std::vector<Vertex2D>& GetVertices() const;
 private:
     void SetModel(glm::mat4 model_mat);
 private:

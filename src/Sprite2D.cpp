@@ -6,9 +6,18 @@
     #include "Formaters.hpp"
 #endif
 
-Sprite2D::Sprite2D(const std::string &texture_path, const Ref<Shader> shader, glm::vec2 size, glm::vec2 pos) : m_Model(1.f), m_Mesh({MeshTexture(MakeReference<Texture>(texture_path), TextureType::Base)}), m_Shader(shader), m_Size(size), m_Position(pos)
+Sprite2D::Sprite2D(const std::string &texture_path, const Ref<Shader> shader, glm::vec2 size, glm::vec2 pos) : m_Model(1.f), m_Mesh(MakeReference<QuadMesh>(MakeReference<Texture>(texture_path))), m_Shader(shader), m_Size(size), m_Position(pos)
 {
    
+}
+
+Sprite2D::Sprite2D(const Ref<Texture> texture, const Ref<Shader> shader, glm::vec2 size, glm::vec2 pos) : m_Model(1.f), m_Mesh(MakeReference<QuadMesh>(texture)), m_Shader(shader), m_Size(size), m_Position(pos)
+{
+   
+}
+
+Sprite2D::Sprite2D(glm::vec2 size, glm::vec2 pos) : m_Model(1.f), m_Mesh(nullptr), m_Shader(nullptr), m_Size(size), m_Position(pos){
+
 }
 
 void Sprite2D::SetPosition(glm::vec2 pos) {
@@ -62,7 +71,7 @@ glm::mat4 Sprite2D::GetModel() const
     return m_Model;
 }
 
-const QuadMesh& Sprite2D::GetMesh() const
+const Ref<QuadMesh> Sprite2D::GetMesh() const
 {
     return m_Mesh;
 }
@@ -72,7 +81,7 @@ const Ref<Shader> Sprite2D::GetShader() const
     return m_Shader;
 }
 
-void Sprite2D::Update() const{
+void Sprite2D::CalculateModelMatrix() const{
     glm::mat4 model = glm::mat4(1.0f);
     
     model = glm::translate(model, {m_Position, 0.f});
@@ -83,11 +92,11 @@ void Sprite2D::Update() const{
     model = glm::scale(model, glm::vec3(m_Size, 1.0f)); 
     
     m_Model = model;
-    
-    if(m_Shader){
-        m_Shader->UseShader();
-        Uniform::SetShaderUniformMat4(*m_Shader, "u_Model", model);
-    }
+}
+
+const std::vector<Vertex2D> &Sprite2D::GetVertices() const
+{
+    return m_Mesh->GetVertices();
 }
 
 void Sprite2D::SetModel(glm::mat4 model_mat) {

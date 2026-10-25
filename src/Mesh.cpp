@@ -7,7 +7,7 @@ Mesh::Mesh(const Ref<VertexArray> va, const Ref<IndexBuffer> ib) : m_VertexArray
 
 }
 
-Mesh::Mesh(const Ref<VertexArray> va, const Ref<IndexBuffer> ib, const std::vector<MeshTexture> &textures) : m_VertexArray(va), m_IndexBuffer(ib), m_Textures(textures)
+Mesh::Mesh(const Ref<VertexArray> va, const Ref<IndexBuffer> ib, const Ref<Texture> texture) : m_VertexArray(va), m_IndexBuffer(ib), m_Texture(texture)
 {
 }
 
@@ -21,32 +21,40 @@ const Ref<IndexBuffer> Mesh::GetIndexBuffer() const
     return m_IndexBuffer;
 }
 
-const std::vector<MeshTexture> Mesh::GetTextures() const
+const Ref<Texture> Mesh::GetTexture() const
 {
-    return m_Textures;
+    return m_Texture;
 }
 
-Mesh QuadMesh::BuildQuadMesh(std::vector<MeshTexture> textures) const
+void Mesh::Construct(const Ref<VertexArray> va, const Ref<IndexBuffer> ib, Ref<Texture> texture) {
+    m_VertexArray = va;
+    m_IndexBuffer = ib;
+    m_Texture = texture;
+}
+
+const std::vector<Vertex2D> &Mesh::GetVertices() const
+{
+    return m_Vertices;
+}
+
+QuadMesh::QuadMesh(const Ref<Texture> texture)
 {
     BufferLayout vb_layout;
     vb_layout.Push<Vertex2D>(false);
-
-    std::vector<Vertex2D> vertices_pixel{
+    
+    std::vector<Vertex2D> vertices = {
         Vertex2D(glm::vec2(-0.5f, -0.5f), glm::vec3(0.f, 0.f, 0.f), glm::vec2(0.f, 0.f)),
         Vertex2D(glm::vec2(0.5f, -0.5f), glm::vec3(0.f, 0.f, 0.f), glm::vec2(1.0f, 0.0f)),
         Vertex2D(glm::vec2(0.5f, 0.5f), glm::vec3(0.f, 0.f, 0.f), glm::vec2(1.0f, 1.0f)),
         Vertex2D(glm::vec2(-0.5f, 0.5f), glm::vec3(0.f, 0.f, 0.f), glm::vec2(0.0f, 1.0f))
     };
+    
+    m_Vertices = vertices;
 
     unsigned int indicies[] = {
         0, 1, 2,
         2, 3, 0
     };
 
-    return Mesh(MakeReference<VertexArray>(MakeReference<VertexBuffer>(vertices_pixel), vb_layout), MakeReference<IndexBuffer>(indicies, 6), textures);
-}
-
-QuadMesh::QuadMesh(std::vector<MeshTexture> textures) : Mesh(BuildQuadMesh(textures))
-{
-    
+    Mesh::Construct(MakeReference<VertexArray>(MakeReference<VertexBuffer>(vertices), vb_layout), MakeReference<IndexBuffer>(indicies, 6), texture);
 }

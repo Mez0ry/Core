@@ -113,6 +113,16 @@ void Uniform::SetShaderUniformMat4(const Shader &shader, const std::string &name
     }
 }
 
+void Uniform::SetShaderUniformMat4Ptr(const Shader &shader, const std::string &name, const float* mat, bool transpose)
+{
+    glUniformMatrix4fv(Uniform::GetUniformLocation(shader, name), 1, transpose, mat);
+    GLenum error = glGetError();
+    if (error != GL_NO_ERROR)
+    {
+        SPDLOG_ERROR("OpenGL error when setting uniform '{}' in shader ID {}: {}", name, shader.GetId(), error);
+    }
+}
+
 int32_t Uniform::GetUniformLocation(const Shader &shader, const std::string &name)
 {
     int32_t loc = glGetUniformLocation(shader.GetId(), name.c_str());

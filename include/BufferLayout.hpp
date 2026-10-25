@@ -8,9 +8,34 @@
 #include "Vertex.hpp"
 #include <glm/ext.hpp>
 
+enum class ShaderDataType{
+    FLOAT, FLOAT2, FLOAT3, FLOAT4, MAT3, MAT4, INT, INT2, INT3, INT4, BOOL, UINT8
+};
+
 struct LayoutElement{
-    LayoutElement(uint32_t _type, uint32_t _count, bool _normalized) : type(_type), count(_count), normalized(_normalized) {}
-    uint32_t type, count;
+    LayoutElement(uint32_t _type, uint32_t _count, bool _normalized) : gl_type(_type), count(_count), normalized(_normalized) {}
+    LayoutElement(ShaderDataType shader_datatype, uint32_t _type, uint32_t _count, bool _normalized) : shader_dt(shader_datatype), gl_type(_type), count(_count), normalized(_normalized) {}
+    
+    uint32_t GetComponentCount() const
+    {
+        switch (shader_dt)
+        {
+            case ShaderDataType::FLOAT:   return 1;
+            case ShaderDataType::FLOAT2:  return 2;
+            case ShaderDataType::FLOAT3:  return 3;
+            case ShaderDataType::FLOAT4:  return 4;
+            case ShaderDataType::MAT3:    return 3;
+            case ShaderDataType::MAT4:    return 4;
+            case ShaderDataType::INT:     return 1;
+            case ShaderDataType::UINT8:    return 1;
+            case ShaderDataType::BOOL:    return 1;
+        }
+
+        return 0;
+    }
+
+    ShaderDataType shader_dt;
+    uint32_t gl_type, count;
     bool normalized;
 };
 
@@ -43,14 +68,25 @@ public:
     auto end() const {return m_BufferLayout.cend();}
 
     bool IsEmpty() const;
-    
+
+    template <typename ... TArgs>
+    static BufferLayout CreateLayout(bool normalized = false);
 private:
     template <typename TValue>
     static auto GetSize(uint32_t count);
 };
 
+template <typename ... TArgs>
+inline BufferLayout BufferLayout::CreateLayout(bool normalized)
+{
+    BufferLayout layout;
+    (layout.Push<TArgs>(normalized), ...);
+    return layout;
+}
+
 template <typename TValue>
-auto BufferLayout::GetSize(uint32_t count){
+auto BufferLayout::GetSize(uint32_t count)
+{
     return count * sizeof(TValue);
 }
 
@@ -66,7 +102,7 @@ inline void BufferLayout::Push(uint32_t count, bool normalized){
 
 template <>
 inline void BufferLayout::Push<float>(uint32_t count, bool normalized){
-    m_BufferLayout.push_back({GL_FLOAT, count, normalized});
+    m_BufferLayout.push_back({ShaderDataType::FLOAT, GL_FLOAT, count, normalized});
     auto size = GetSize<float>(count);
     m_Offsets.push_back((m_Offsets.empty()) ? size : m_Offsets.back() + size);
     m_Stride += size;
@@ -74,7 +110,7 @@ inline void BufferLayout::Push<float>(uint32_t count, bool normalized){
 
 template <>
 inline void BufferLayout::Push<uint8_t>(uint32_t count, bool normalized){
-    m_BufferLayout.push_back({GL_UNSIGNED_BYTE, count, normalized});
+    m_BufferLayout.push_back({ShaderDataType::UINT8, GL_UNSIGNED_BYTE, count, normalized});
     auto size = GetSize<uint8_t>(count);
     m_Offsets.push_back((m_Offsets.empty()) ? size : m_Offsets.back() + size);
     m_Stride += size;
@@ -137,7 +173,10 @@ inline void BufferLayout::Push<glm::vec<3, float, glm::packed_highp>>(bool norma
 
 template <>
 inline void BufferLayout::Push<glm::mat<4, 4, glm::f32, glm::packed_highp>>(bool normalized){
-    this->Push<float>(16, normalized);
+    m_BufferLayout.push_back({ShaderDataType::MAT4, GL_FLOAT, 16, normalized});
+    auto size = GetSize<float>(16);
+    m_Offsets.push_back((m_Offsets.empty()) ? size : m_Offsets.back() + size);
+    m_Stride += size;
 }
 
 template <>
@@ -145,8 +184,6 @@ inline void BufferLayout::Push<Vertex2D>(bool normalized){
     this->Push<glm::vec2>(normalized);
     this->Push<glm::vec3>(normalized);
     this->Push<glm::vec2>(normalized);
-    this->Push<glm::vec3>(normalized);
-    this->Push<glm::vec3>(normalized);
 }
 
 #endif //!__BUFFER_LAYOUT_HPP__

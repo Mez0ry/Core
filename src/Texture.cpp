@@ -30,7 +30,7 @@ Texture::Texture(const std::string &path, GLenum pixel_data_type, int32_t wrappi
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filtering);
 
     auto format = (m_BasePerPixel == 4) ? GL_RGBA : GL_RGB;
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, format, pixel_data_type, m_LocalBuffer.get());
+    glTexImage2D(GL_TEXTURE_2D, 0, format, m_Width, m_Height, 0, format, pixel_data_type, m_LocalBuffer.get());
     
     UnBind();
 }

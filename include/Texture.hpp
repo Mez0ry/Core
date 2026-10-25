@@ -15,7 +15,7 @@ private:
 public:
     Texture(const std::string& path, GLenum pixel_data_type = GL_UNSIGNED_BYTE, int32_t wrapping = GL_CLAMP_TO_EDGE, int32_t filtering = GL_LINEAR);
     ~Texture();
-
+    
     [[nodiscard]] Ref<uint8_t> Data() const;
 
     void Bind(uint32_t slot = 0) const;

@@ -9,7 +9,7 @@ class Shader
 private:
     Scope<FragmentShader> m_FragmentShader;
     Scope<VertexShader> m_VertexShader;
-    std::uint32_t m_Id;
+    std::uint32_t m_Id{0};
 public:
     Shader(Scope<VertexShader> vertex_shader, Scope<FragmentShader> fragment_shader);
     /**

@@ -1,5 +1,6 @@
 #include "IndexBuffer.hpp"
 #include <glad/gl.h>
+#include "Base.hpp"
 
 IndexBuffer::IndexBuffer(const uint32_t *data, uint32_t element_count) : m_Count(element_count)
 {
@@ -7,23 +8,23 @@ IndexBuffer::IndexBuffer(const uint32_t *data, uint32_t element_count) : m_Count
 }
 
 IndexBuffer::~IndexBuffer() {
-    glDeleteBuffers(1, &m_BufferId);
+    gl::DeleteBuffer(m_BufferId);
 }
 
 void IndexBuffer::CreateBuffer(const uint32_t *data, uint32_t element_count)
 {
-    glGenBuffers(1, &m_BufferId);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_BufferId);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, element_count * sizeof(uint32_t), data, GL_STATIC_DRAW);
+    gl::AllocateBuffer(m_BufferId);
+    gl::Bind(BufferTarget::ElementArray, m_BufferId);
+    gl::BufferData(BufferTarget::ElementArray, element_count * sizeof(uint32_t), data, BufferHint::StaticDraw);
 }
 
 void IndexBuffer::Bind() const
 {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_BufferId);
+    gl::Bind(BufferTarget::ElementArray, m_BufferId);
 }
 
 void IndexBuffer::UnBind() const {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    gl::UnBind(BufferTarget::ElementArray);
 }
 
 uint32_t IndexBuffer::GetCount() const

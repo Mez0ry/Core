@@ -38,7 +38,7 @@ std::optional<uint32_t> BufferLayout::GetStride(const uint32_t count, const uint
 
 std::optional<uint32_t> BufferLayout::GetStride(const LayoutElement &layout_element) const
 {
-    return GetStride(layout_element.count, layout_element.type);
+    return GetStride(layout_element.count, layout_element.gl_type);
 }
 
 std::optional<uint32_t> BufferLayout::GetStrideAt(const uint32_t index) const
